@@ -1,1 +1,898 @@
-test
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Cyan Navy App</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Gujarati:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap">
+<style>
+/* Layout: phone-width app shell. Top app bar, scrolling content, bottom tab bar. Cyan accent on navy. Every label is English plus Gujarati. */
+:root{
+  --bg:#EDF4F8; --surface:#FFFFFF; --fg:#0B2545; --muted:#5A6B80; --line:#D9E5EE;
+  --accent:#0A8FAE; --accent-fill:#06B6D4; --on-accent:#032530; --soft:#E0F6FB;
+  --bar:#0B2545; --on-bar:#FFFFFF; --danger:#C2410C;
+  --font:'Inter','Noto Sans Gujarati',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --head:'Space Grotesk','Inter','Noto Sans Gujarati',system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#06122A; --surface:#0D2144; --fg:#E6F1F8; --muted:#8FA6BF; --line:#1B3560;
+  --accent:#22D3EE; --accent-fill:#22D3EE; --on-accent:#03222B; --soft:#0F2C4E;
+  --bar:#0A1A38; --on-bar:#FFFFFF; --danger:#FB923C; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#06122A; --surface:#0D2144; --fg:#E6F1F8; --muted:#8FA6BF; --line:#1B3560;
+  --accent:#22D3EE; --accent-fill:#22D3EE; --on-accent:#03222B; --soft:#0F2C4E;
+  --bar:#0A1A38; --on-bar:#FFFFFF; --danger:#FB923C; color-scheme:dark}
+
+*,*::before,*::after{box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--bg);color:var(--fg);font-family:var(--font);font-size:14px;-webkit-tap-highlight-color:transparent;overscroll-behavior:none}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bar);z-index:10}
+body::after{content:"";position:fixed;inset:auto 0 0;height:env(safe-area-inset-bottom,0px);background:var(--surface);z-index:10}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none}
+:focus-visible{outline:2px solid var(--accent-fill);outline-offset:2px}
+
+.app{height:100%;max-width:480px;margin:0 auto;display:flex;flex-direction:column;background:var(--bg);box-shadow:0 0 0 1px var(--line)}
+.gut{padding-inline:max(16px,env(safe-area-inset-left,0px)) max(16px,env(safe-area-inset-right,0px))}
+
+.bar{background:var(--bar);color:var(--on-bar);flex:none}
+.bar-in{height:56px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.logo{width:30px;height:30px;border-radius:9px;background:var(--accent-fill);color:var(--on-accent);display:grid;place-items:center;font:700 14px var(--head);flex:none}
+.ttl{font:700 19px var(--head);letter-spacing:.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ttl .gu{font:600 15px var(--font);opacity:.8;margin-left:8px}
+.icon-btn{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:var(--on-bar);transition:background .15s;flex:none}
+.icon-btn:active{background:rgba(255,255,255,.18)}
+svg.i{width:24px;height:24px;fill:currentColor;flex:none}
+
+main{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column}
+main>.gut{flex:1;display:flex;flex-direction:column;padding-block:16px 20px}
+.view{flex:1;display:flex;flex-direction:column;gap:14px}
+.view[hidden],[hidden]{display:none!important}
+
+.uc{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:6px;padding:32px 8px}
+.uc .ring{width:84px;height:84px;border-radius:50%;background:var(--soft);color:var(--accent);display:grid;place-items:center;margin-bottom:10px}
+.uc .ring svg{width:40px;height:40px}
+.uc b{font:700 22px var(--head)}
+.uc .gb{font:700 18px var(--font);color:var(--accent);margin-bottom:6px}
+.uc span{color:var(--muted);max-width:28ch;line-height:1.5}
+
+h2{font:700 13px var(--font);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:2px 0 0}
+h2 .gu{text-transform:none;letter-spacing:0;margin-left:6px}
+.menu{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.opt{width:100%;display:flex;align-items:center;gap:14px;padding:14px;text-align:left;border-top:1px solid var(--line);transition:background .15s}
+.opt:first-child{border-top:0}
+.opt:active{background:var(--soft)}
+.opt .dot{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;flex:none;background:var(--soft);color:var(--accent)}
+.opt .t{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
+.opt .t b{font-weight:600;font-size:15px}
+.opt .t .gu{font-weight:600;font-size:14px;color:var(--accent)}
+.opt .t small{color:var(--muted);font-size:12px;margin-top:2px}
+.opt .chev{color:var(--muted);width:22px;height:22px}
+
+/* Add / Edit / Delete Items */
+.back{align-self:flex-start;display:inline-flex;align-items:center;gap:4px;color:var(--accent);font-weight:600;padding:4px 10px 4px 0;min-height:36px}
+.back svg{width:20px;height:20px}
+.modes{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.mode{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:96px;padding:10px 6px;border-radius:16px;border:2px solid var(--line);background:var(--surface);color:var(--accent);font-weight:600;text-align:center;line-height:1.25;transition:transform .1s}
+.mode:active{transform:scale(.97)}
+.mode svg{width:26px;height:26px;margin-bottom:4px}
+.mode .gu{font-size:13px;font-weight:600;opacity:.9}
+.mode[aria-pressed="true"]{background:var(--accent-fill);border-color:var(--accent-fill);color:var(--on-accent)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:14px}
+.card h3{margin:0;font:700 20px var(--head);color:var(--accent)}
+.fld{display:flex;flex-direction:column;gap:2px;min-width:0}
+.fld label{font-weight:600;font-size:15px}
+.fld .sub{font-size:12px;color:var(--muted);margin-bottom:6px}
+input[type=text],select{width:100%;min-height:48px;border-radius:12px;border:1.5px solid var(--line);background:var(--bg);padding:0 14px;min-width:0}
+input:focus,select:focus{border-color:var(--accent-fill);outline:0;box-shadow:0 0 0 3px var(--soft)}
+.guRow{display:flex;gap:8px}
+.kbBtn{width:52px;flex:none;border-radius:12px;background:var(--soft);color:var(--accent);display:grid;place-items:center;border:1.5px solid transparent}
+.kbBtn[aria-pressed="true"]{background:var(--accent-fill);color:var(--on-accent)}
+.sugs{display:flex;flex-wrap:wrap;gap:8px}
+.sugTitle{width:100%;font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.04em}
+.sug{display:flex;flex-direction:column;align-items:flex-start;gap:1px;min-height:52px;padding:6px 14px;border-radius:14px;background:var(--soft);color:var(--accent);border:1.5px solid transparent;text-align:left;max-width:100%}
+.sug .g{font-weight:700;font-size:16px;overflow-wrap:anywhere}
+.sug small{font-size:11px;color:var(--muted);font-weight:600}
+.sug.on{border-color:var(--accent-fill)}
+.micBtn[aria-pressed="true"]{background:var(--accent-fill);color:var(--on-accent);animation:pulse 1.2s infinite}
+.micBtn:disabled{opacity:.4}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(6,182,212,.55)}100%{box-shadow:0 0 0 14px rgba(6,182,212,0)}}
+.micNote{font-size:12px;line-height:1.5;color:var(--accent);margin-top:-4px}
+.micNote[data-kind="warn"]{color:var(--danger)}
+.linkbtn{display:inline;margin-left:6px;font-weight:700;text-decoration:underline;color:inherit}
+.autoNote{font-size:12px;color:var(--accent);line-height:1.5;margin-top:-6px}
+.hint{font-size:13px;color:var(--muted);line-height:1.5}
+.kb{border:1px solid var(--line);border-radius:12px;background:var(--bg);padding:8px;display:flex;flex-direction:column;gap:6px}
+.kb .rowk{display:flex;flex-wrap:wrap;gap:5px}
+.kb button{min-width:36px;height:38px;padding:0 6px;border-radius:8px;background:var(--surface);border:1px solid var(--line);font-size:16px;font-weight:500}
+.kb button:active{background:var(--soft)}
+.kb .wide{flex:1;min-width:80px;font-size:13px;color:var(--muted)}
+.kb .lab{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;margin-top:2px}
+.actions{display:grid;grid-template-columns:1.4fr 1fr;gap:12px}
+.btn{min-height:54px;border-radius:14px;padding:6px 12px;font-weight:700;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.25;transition:transform .1s}
+.btn:active{transform:scale(.97)}
+.btn .gu{font-size:13px;font-weight:600;opacity:.85}
+.btn.pri{background:var(--accent-fill);color:var(--on-accent)}
+.btn.sec{background:var(--soft);color:var(--accent)}
+.btn.dng{background:var(--danger);color:#fff}
+.prompt{background:var(--soft);color:var(--fg);border-radius:12px;padding:14px;line-height:1.5}
+.prompt .gu{display:block;color:var(--accent);font-weight:600}
+.confirm{border:1.5px solid var(--danger);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:12px}
+.confirm b{font-size:15px}
+.tbl{border-radius:16px;overflow:hidden;border:1px solid var(--line);background:var(--surface)}
+.th,.tr{display:grid;grid-template-columns:1fr 104px;gap:10px;align-items:center;padding:12px 16px;text-align:left;width:100%}
+.th{background:var(--bar);color:#fff;font-weight:700;font-size:15px}
+.th small{display:block;font-weight:500;opacity:.8;font-size:12px}
+.tr{border-top:1px solid var(--line);min-height:56px}
+.tr:first-child{border-top:0}
+.tr .n b{display:block;font-weight:600}
+.tr .n span{color:var(--accent);font-weight:600;font-size:13px}
+.tr .u{font-weight:600;font-size:13px}
+.tr .u span{display:block;color:var(--muted);font-weight:500}
+button.tr:active,.tr.sel{background:var(--soft)}
+.tr .trash{color:var(--danger);width:20px;height:20px;margin-left:6px;vertical-align:middle}
+.emptyRow{padding:22px 16px;text-align:center;color:var(--muted);line-height:1.6}
+
+.nav{flex:none;background:var(--surface);border-top:1px solid var(--line)}
+.nav-in{display:grid;grid-template-columns:repeat(5,1fr);height:76px}
+.tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;color:var(--muted);min-width:0;line-height:1.2}
+.tab .pill-bg{width:56px;height:30px;border-radius:15px;display:grid;place-items:center;transition:background .2s;margin-bottom:2px}
+.tab .en{font-size:11px;font-weight:600}
+.tab .gu{font-size:11px;font-weight:500}
+.tab[aria-selected="true"]{color:var(--fg)}
+.tab[aria-selected="true"] .pill-bg{background:var(--accent-fill);color:var(--on-accent)}
+.tab:active .pill-bg{background:var(--soft)}
+
+.toast{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:var(--bar);color:#fff;padding:10px 16px;border-radius:22px;font-weight:600;opacity:0;pointer-events:none;transition:.25s;z-index:20;max-width:calc(100% - 32px);text-align:center}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+/* Price List */
+.pr{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:12px 16px;border-top:1px solid var(--line);min-height:68px}
+.pr:first-child{border-top:0}
+.pr .n b{display:block;font-weight:600}
+.pr .n span{display:block;color:var(--accent);font-weight:600;font-size:13px}
+.pr .n em{display:inline-block;margin-top:4px;font-style:normal;font-size:12px;font-weight:600;color:var(--muted);background:var(--soft);padding:2px 8px;border-radius:8px}
+.pr .rt{display:flex;align-items:center;gap:6px}
+.rbox{display:flex;align-items:center;gap:4px;width:112px;height:44px;border-radius:12px;border:1.5px solid var(--line);background:var(--bg);padding:0 10px}
+.rbox.on{border-color:var(--accent-fill);box-shadow:0 0 0 3px var(--soft);background:var(--surface)}
+.rbox b{color:var(--muted);font-weight:600}
+.rbox input{flex:1;min-width:0;width:100%;border:0;background:none;outline:0;padding:0;font-weight:700;font-size:16px;text-align:right}
+.rbtn{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:var(--soft);color:var(--accent);flex:none}
+.rbtn.ok{background:var(--accent-fill);color:var(--on-accent)}
+.rbtn svg{width:22px;height:22px}
+
+/* Payment + parties */
+textarea{width:100%;border-radius:12px;border:1.5px solid var(--line);background:var(--bg);padding:12px 14px;resize:vertical;min-height:84px;font:inherit;color:inherit}
+textarea:focus{border-color:var(--accent-fill);outline:0;box-shadow:0 0 0 3px var(--soft)}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.so{position:relative;display:block}
+.so input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
+.so span{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;min-height:58px;border-radius:14px;border:2px solid var(--line);background:var(--bg);font-weight:700;line-height:1.25;padding:6px 6px 6px 34px}
+.so span::before{content:"";position:absolute;left:12px;top:50%;width:18px;height:18px;margin-top:-9px;border-radius:50%;border:2px solid var(--muted)}
+.so input:checked+span{border-color:var(--accent-fill);background:var(--soft)}
+.so input:checked+span::before{border-color:var(--accent);background:radial-gradient(var(--accent) 0 45%,transparent 50%)}
+.so input:focus-visible+span{outline:2px solid var(--accent-fill);outline-offset:2px}
+.so small{font-size:13px;font-weight:600;color:var(--accent)}
+.pl{display:grid;grid-template-columns:1fr auto;gap:10px;padding:12px 16px;border-top:1px solid var(--line);align-items:center}
+.pl:first-child{border-top:0}
+.pl b{display:block;font-weight:600;overflow-wrap:anywhere}
+.pl .d{font-size:12px;color:var(--muted);overflow-wrap:anywhere;margin-top:2px}
+.pl .a{font:700 16px var(--head);white-space:nowrap}
+.pl .a.in{color:var(--accent)}.pl .a.out{color:var(--danger)}
+.mini{height:40px;padding:0 12px;border-radius:10px;font-weight:700;font-size:13px}
+.mini.dng{background:var(--danger);color:#fff}.mini.sec{background:var(--soft);color:var(--accent)}
+.rbtn.trash{color:var(--danger)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="app">
+  <header class="bar"><div class="bar-in gut">
+    <div class="brand"><div class="logo">GM</div><div class="ttl" id="ttl"></div></div>
+    <button class="icon-btn" id="themeBtn" aria-label="Switch light or dark theme / લાઇટ કે ડાર્ક થીમ બદલો"><svg class="i" viewBox="0 0 24 24"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm0 16V5a7 7 0 010 14z"/></svg></button>
+  </div></header>
+
+  <main id="main"><div class="gut">
+
+    <section class="view" id="v-home"></section>
+    <section class="view" id="v-payment" hidden>
+      <div class="card" id="payForm" data-form>
+        <h3>Payment / પેમેન્ટ</h3>
+        <div class="seg" role="radiogroup" aria-label="Type / પ્રકાર">
+          <label class="so"><input type="radio" name="ptype" value="received" checked><span>Received<small>મળ્યા</small></span></label>
+          <label class="so"><input type="radio" name="ptype" value="paid"><span>Paid<small>ચૂકવ્યા</small></span></label>
+        </div>
+        <div class="fld">
+          <label for="pay-party" id="payPartyLbl"></label>
+          <div class="sub" id="payPartySub"></div>
+          <select id="pay-party"></select>
+          <div class="hint" id="payPartyEmpty" hidden style="margin-top:6px"></div>
+        </div>
+        <div class="fld">
+          <label for="pay-amt">Amount</label>
+          <div class="sub">રકમ (₹)</div>
+          <input type="text" id="pay-amt" inputmode="decimal" placeholder="0">
+        </div>
+        <div class="fld">
+          <label for="pay-note">Particular</label>
+          <div class="sub">વિગત</div>
+          <textarea id="pay-note" rows="3" placeholder="Payment details · પેમેન્ટની વિગત"></textarea>
+        </div>
+        <div class="actions">
+          <button type="button" data-save class="btn pri">Save<span class="gu">સાચવો</span></button>
+          <button type="button" class="btn sec" id="payClear">Clear<span class="gu">સાફ કરો</span></button>
+        </div>
+      </div>
+      <h2>Recent payments<span class="gu">તાજેતરના પેમેન્ટ</span></h2>
+      <div class="tbl" id="payList"></div>
+    </section>
+    <section class="view" id="v-bill" hidden></section>
+    <section class="view" id="v-reports" hidden></section>
+
+    <section class="view" id="v-admin" hidden>
+      <h2>Add new<span class="gu">નવું ઉમેરો</span></h2>
+      <div class="menu">
+        <button class="opt" data-open="items">
+          <span class="dot"><svg class="i" viewBox="0 0 24 24"><path d="M20 6h-3V4a2 2 0 00-2-2H9a2 2 0 00-2 2v2H4a2 2 0 00-2 2v11a2 2 0 002 2h16a2 2 0 002-2V8a2 2 0 00-2-2zM9 4h6v2H9V4zm7 9h-3v3h-2v-3H8v-2h3V8h2v3h3v2z"/></svg></span>
+          <span class="t"><b>Add Items</b><span class="gu">આઇટમ ઉમેરો</span><small>Create a new item · નવી આઇટમ બનાવો</small></span>
+          <svg class="i chev" viewBox="0 0 24 24"><path d="M9.4 6 8 7.4l4.6 4.6L8 16.6 9.4 18l6-6z"/></svg>
+        </button>
+        <button class="opt" data-open="customer">
+          <span class="dot"><svg class="i" viewBox="0 0 24 24"><path d="M15 12a4 4 0 100-8 4 4 0 000 8zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></span>
+          <span class="t"><b>Add Customer</b><span class="gu">ગ્રાહક ઉમેરો</span><small>Register a new customer · નવો ગ્રાહક નોંધો</small></span>
+          <svg class="i chev" viewBox="0 0 24 24"><path d="M9.4 6 8 7.4l4.6 4.6L8 16.6 9.4 18l6-6z"/></svg>
+        </button>
+        <button class="opt" data-open="supplier">
+          <span class="dot"><svg class="i" viewBox="0 0 24 24"><path d="M20 8h-3V4H3a2 2 0 00-2 2v11h2a3 3 0 006 0h6a3 3 0 006 0h2v-5l-3-4zM6 18.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm13.5-9 1.96 2.5H17V9.5h2.5zM18 18.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/></svg></span>
+          <span class="t"><b>Add Supplier</b><span class="gu">સપ્લાયર ઉમેરો</span><small>Register a new supplier · નવો સપ્લાયર નોંધો</small></span>
+          <svg class="i chev" viewBox="0 0 24 24"><path d="M9.4 6 8 7.4l4.6 4.6L8 16.6 9.4 18l6-6z"/></svg>
+        </button>
+      </div>
+      <h2>Rates<span class="gu">ભાવ</span></h2>
+      <div class="menu">
+        <button class="opt" data-open="prices">
+          <span class="dot"><svg class="i" viewBox="0 0 24 24"><path d="M21.41 11.58l-9-9A2 2 0 0011 2H4a2 2 0 00-2 2v7c0 .55.22 1.05.59 1.42l9 9c.36.36.86.58 1.41.58s1.05-.22 1.41-.59l7-7c.37-.36.59-.86.59-1.41s-.23-1.06-.59-1.42zM5.5 7a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/></svg></span>
+          <span class="t"><b>Price List</b><span class="gu">ભાવ પત્રક</span><small>Set the rate of every item · દરેક વસ્તુનો ભાવ નક્કી કરો</small></span>
+          <svg class="i chev" viewBox="0 0 24 24"><path d="M9.4 6 8 7.4l4.6 4.6L8 16.6 9.4 18l6-6z"/></svg>
+        </button>
+      </div>
+    </section>
+
+    <section class="view" id="v-items" hidden>
+      <button class="back" id="itemsBack"><svg class="i" viewBox="0 0 24 24"><path d="M15.4 6 16.8 7.4 12.2 12l4.6 4.6-1.4 1.4-6-6z"/></svg>Admin · એડમિન</button>
+
+      <div class="modes" id="modes">
+        <button class="mode" data-mode="add" aria-pressed="true"><svg class="i" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6z"/></svg>Add Item<span class="gu">વસ્તુ ઉમેરો</span></button>
+        <button class="mode" data-mode="edit" aria-pressed="false"><svg class="i" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.8 9.94l-3.75-3.75L3 17.25zM20.7 7.04a1 1 0 000-1.41l-2.34-2.34a1 1 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>Edit Item<span class="gu">વસ્તુ સુધારો</span></button>
+        <button class="mode" data-mode="delete" aria-pressed="false"><svg class="i" viewBox="0 0 24 24"><path d="M6 19a2 2 0 002 2h8a2 2 0 002-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>Delete Item<span class="gu">વસ્તુ કાઢો</span></button>
+      </div>
+
+      <div class="card">
+        <h3 id="formTitle">Add Item / વસ્તુ ઉમેરો</h3>
+        <div class="prompt" id="prompt" hidden></div>
+
+        <div id="itemForm" data-form class="card" style="border:0;padding:0;border-radius:0;background:none">
+          <div class="fld">
+            <label for="item-en">Item name (English)</label>
+            <div class="sub">વસ્તુનું નામ (અંગ્રેજી)</div>
+            <input type="text" id="item-en" autocapitalize="words" enterkeyhint="next">
+          </div>
+          <div class="fld">
+            <label for="item-gu">Item name (Gujarati)</label>
+            <div class="sub">વસ્તુનું નામ (ગુજરાતી)</div>
+            <div class="guRow">
+              <input type="text" id="item-gu" lang="gu">
+              <button type="button" class="kbBtn micBtn" data-mic="gu" aria-pressed="false" hidden aria-label="Voice typing in Gujarati / ગુજરાતીમાં બોલીને લખો"><svg class="i" viewBox="0 0 24 24"><path d="M12 14a3 3 0 003-3V5a3 3 0 00-6 0v6a3 3 0 003 3zm5-3a5 5 0 01-10 0H5a7 7 0 006 6.92V21h2v-3.08A7 7 0 0019 11h-2z"/></svg></button>
+              <button type="button" class="kbBtn" id="kbBtn" aria-pressed="false" aria-label="Gujarati keyboard / ગુજરાતી કીબોર્ડ"><svg class="i" viewBox="0 0 24 24"><path d="M20 5H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V7a2 2 0 00-2-2zm-9 3h2v2h-2V8zm0 3h2v2h-2v-2zM8 8h2v2H8V8zm0 3h2v2H8v-2zm-1 2H5v-2h2v2zm0-3H5V8h2v2zm9 7H8v-2h8v2zm0-4h-2v-2h2v2zm0-3h-2V8h2v2zm3 3h-2v-2h2v2zm0-3h-2V8h2v2z"/></svg></button>
+            </div>
+          </div>
+          <div class="autoNote" id="autoNote" hidden>Filled in from the English name. Tap the box to edit. · અંગ્રેજી નામ પરથી આપોઆપ ભરાયું છે. ફેરફાર કરવા બોક્સ પર ટેપ કરો.</div>
+          <div class="micNote" id="micNote" hidden></div>
+          <div class="sugs" id="sugs" hidden></div>
+          <div class="kb" id="kb" hidden></div>
+          <div class="hint">Type the English name and the Gujarati translation fills in by itself. Edit it, or pick a phonetic spelling below. Use the keyboard button for matra and bindi. / અંગ્રેજી નામ લખો, ગુજરાતી અનુવાદ આપોઆપ ભરાશે. ફેરફાર કરો અથવા નીચેથી ઉચ્ચાર મુજબ જોડણી પસંદ કરો. માત્રા અને બિંદુ માટે કીબોર્ડ બટન વાપરો.</div>
+          <div class="fld">
+            <label for="item-unit">Unit</label>
+            <div class="sub">એકમ</div>
+            <select id="item-unit"></select>
+          </div>
+          <div class="actions">
+            <button type="button" data-save class="btn pri">Save<span class="gu">સાચવો</span></button>
+            <button type="button" class="btn sec" id="cancelBtn">Cancel<span class="gu">રદ કરો</span></button>
+          </div>
+        </div>
+
+        <div class="confirm" id="confirm" hidden>
+          <b id="confirmTxt"></b>
+          <div class="actions">
+            <button type="button" class="btn dng" id="confirmYes">Delete<span class="gu">કાઢો</span></button>
+            <button type="button" class="btn sec" id="confirmNo">Cancel<span class="gu">રદ કરો</span></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="tbl">
+        <div class="th"><div>Item<small>વસ્તુ</small></div><div>Unit<small>એકમ</small></div></div>
+        <div id="itemRows"></div>
+      </div>
+    </section>
+
+    <section class="view" id="v-prices" hidden>
+      <button class="back" id="pricesBack"><svg class="i" viewBox="0 0 24 24"><path d="M15.4 6 16.8 7.4 12.2 12l4.6 4.6-1.4 1.4-6-6z"/></svg>Admin · એડમિન</button>
+      <div class="card" style="gap:6px">
+        <h3>Price List / ભાવ પત્રક</h3>
+        <div class="hint">Rate is for 1 unit of each item. Tap the pencil to change a rate. / ભાવ દરેક વસ્તુના 1 એકમનો છે. ભાવ બદલવા પેન્સિલ પર ટેપ કરો.</div>
+      </div>
+      <div class="tbl">
+        <div class="th" style="grid-template-columns:1fr auto"><div>Item<small>વસ્તુ</small></div><div style="width:162px;text-align:left">Rate<small>ભાવ</small></div></div>
+        <div id="priceRows"></div>
+      </div>
+    </section>
+
+    <section class="view" id="v-party" hidden>
+      <button class="back" id="partyBack"><svg class="i" viewBox="0 0 24 24"><path d="M15.4 6 16.8 7.4 12.2 12l4.6 4.6-1.4 1.4-6-6z"/></svg>Admin · એડમિન</button>
+      <div class="card" id="partyForm" data-form>
+        <h3 id="partyTitle"></h3>
+        <div class="fld">
+          <label for="party-name" id="partyLbl"></label>
+          <div class="sub">નામ</div>
+          <input type="text" id="party-name" autocapitalize="words">
+        </div>
+        <div class="actions">
+          <button type="button" data-save class="btn pri">Save<span class="gu">સાચવો</span></button>
+          <button type="button" class="btn sec" id="partyClear">Clear<span class="gu">સાફ કરો</span></button>
+        </div>
+      </div>
+      <div class="tbl"><div class="th" style="grid-template-columns:1fr"><div id="partyListHead"></div></div><div id="partyRows"></div></div>
+    </section>
+
+  </div></main>
+
+  <nav class="nav" aria-label="Main"><div class="nav-in gut" role="tablist">
+    <button class="tab" role="tab" data-t="home" aria-selected="true"><span class="pill-bg"><svg class="i" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></span><span class="en">Home</span><span class="gu">હોમ</span></button>
+    <button class="tab" role="tab" data-t="payment" aria-selected="false"><span class="pill-bg"><svg class="i" viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg></span><span class="en">Payment</span><span class="gu">પેમેન્ટ</span></button>
+    <button class="tab" role="tab" data-t="bill" aria-selected="false"><span class="pill-bg"><svg class="i" viewBox="0 0 24 24"><path d="M18 17H6v-2h12v2zm0-4H6v-2h12v2zm0-4H6V7h12v2zM3 22l1.5-1.5L6 22l1.5-1.5L9 22l1.5-1.5L12 22l1.5-1.5L15 22l1.5-1.5L18 22l1.5-1.5L21 22V2l-1.5 1.5L18 2l-1.5 1.5L15 2l-1.5 1.5L12 2l-1.5 1.5L9 2 7.5 3.5 6 2 4.5 3.5 3 2v20z"/></svg></span><span class="en">Bill</span><span class="gu">બિલ</span></button>
+    <button class="tab" role="tab" data-t="reports" aria-selected="false"><span class="pill-bg"><svg class="i" viewBox="0 0 24 24"><path d="M5 9.2h3V19H5V9.2zM10.6 5h2.8v14h-2.8V5zm5.6 8H19v6h-2.8v-6z"/></svg></span><span class="en">Reports</span><span class="gu">રિપોર્ટ</span></button>
+    <button class="tab" role="tab" data-t="admin" aria-selected="false"><span class="pill-bg"><svg class="i" viewBox="0 0 24 24"><path d="M12 1 3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg></span><span class="en">Admin</span><span class="gu">એડમિન</span></button>
+  </div></nav>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function(){
+  var TITLES={home:['Home','હોમ'],payment:['Payment','પેમેન્ટ'],bill:['Bill','બિલ'],reports:['Reports','રિપોર્ટ'],admin:['Admin','એડમિન']};
+  var THEME='cyan-navy-theme', ITEMS_KEY='cyan-navy-items-v1', RATES_KEY='cyan-navy-rates-v1';
+  var UNITS=[['KG','કિલો'],['Gram','ગ્રામ'],['Quintal','ક્વિન્ટલ'],['Ton','ટન'],['Litre','લિટર'],['Bag','બોરી'],['Box','બોક્સ'],['Nos','નંગ']];
+  /* English word -> Gujarati word. Used for the default translation. Add more pairs as needed. */
+  var DICT=[['Items','વસ્તુઓ'],['Item','વસ્તુ'],['Cement','સિમેન્ટ'],['Wheat','ઘઉં'],['Rice','ચોખા'],['Sugar','ખાંડ'],['Salt','મીઠું'],['Flour','લોટ'],['Oil','તેલ'],['Ghee','ઘી'],['Milk','દૂધ'],['Tea','ચા'],['Steel','સ્ટીલ'],['Iron','લોખંડ'],['Sand','રેતી'],['Bricks','ઈંટ'],['Brick','ઈંટ'],['Coal','કોલસો'],['Cotton','કપાસ'],['Groundnut','મગફળી'],['Castor','એરંડા'],['Cumin','જીરું'],['Chana','ચણા'],
+    ['Butter','માખણ'],['Paneer','પનીર'],['Curd','દહીં'],['Buttermilk','છાશ'],['Cream','ક્રીમ'],['Jaggery','ગોળ'],['Maida','મેંદો'],['Besan','બેસન'],['Semolina','રવો'],['Dal','દાળ'],['Tur','તુવેર'],['Moong','મગ'],['Urad','અડદ'],['Coffee','કોફી'],['Almond','બદામ'],['Cashew','કાજુ'],['Pistachio','પિસ્તા'],['Raisin','કિસમિસ'],['Cardamom','એલચી'],['Saffron','કેસર'],['Sweet','મીઠાઈ'],['Mithai','મીઠાઈ'],['Barfi','બરફી'],['Peda','પેંડા'],['Ladoo','લાડુ'],['Jalebi','જલેબી'],['Rabdi','રબડી'],['Shrikhand','શ્રીખંડ'],['Basundi','બાસુંદી'],['Mava','માવો'],['Khaman','ખમણ'],['Dhokla','ઢોકળા'],['Samosa','સમોસા'],['Namkeen','નમકીન'],['Farsan','ફરસાણ'],['Cake','કેક'],['Biscuit','બિસ્કિટ'],['Chocolate','ચોકલેટ'],['Ice','આઈસ'],['Chilli','મરચું'],['Turmeric','હળદર'],['Coriander','ધાણા'],['Mustard','રાઈ'],['Spices','મસાલા'],['Masala','મસાલા'],['Potato','બટાકા'],['Onion','ડુંગળી'],['Tomato','ટામેટા'],['Garlic','લસણ'],['Ginger','આદુ'],['Lemon','લીંબુ'],['Banana','કેળા'],['Mango','કેરી'],['Apple','સફરજન'],['Coconut','નારિયેળ'],['Water','પાણી'],['Packing','પેકિંગ'],['Box','ડબ્બો'],['Bag','થેલી'],['Fertilizer','ખાતર'],['Urea','યુરિયા'],['Sesame','તલ'],['Bajra','બાજરી'],['Maize','મકાઈ'],['Pulses','કઠોળ'],['Gas','ગેસ'],['Cylinder','સિલિન્ડર'],['Gulab','ગુલાબ'],['Jamun','જાંબુ'],['Pure','શુદ્ધ'],['Fresh','તાજા'],['Mix','મિક્સ'],['Special','સ્પેશિયલ'],['Big','મોટા'],['Small','નાના'],['Red','લાલ'],['Green','લીલા'],['White','સફેદ'],['Black','કાળા'],['Yellow','પીળા']];
+  var DMAP={};DICT.forEach(function(d){DMAP[d[0].toLowerCase()]=d[1]});
+  function lev(a,b){
+    var m=a.length,n=b.length,d=[],i,j;
+    for(i=0;i<=m;i++){d[i]=[i]}
+    for(j=1;j<=n;j++)d[0][j]=j;
+    for(i=1;i<=m;i++)for(j=1;j<=n;j++)
+      d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a.charAt(i-1)===b.charAt(j-1)?0:1));
+    return d[m][n];
+  }
+  function fuzzyKey(k,map){
+    if(k.length<5)return null;
+    var best=null,bd=99,lim=k.length>=8?2:1;
+    Object.keys(map).forEach(function(key){
+      if(Math.abs(key.length-k.length)>lim)return;
+      var d=lev(k,key);if(d<bd){bd=d;best=key}
+    });
+    return bd<=lim?best:null;
+  }
+  function lookup(w){
+    var k=w.toLowerCase().replace(/[^a-z]/g,'');if(!k)return null;
+    if(DMAP[k])return DMAP[k];
+    if(k.length>3&&k.slice(-2)==='es'&&DMAP[k.slice(0,-2)])return DMAP[k.slice(0,-2)];
+    if(k.length>2&&k.slice(-1)==='s'&&DMAP[k.slice(0,-1)])return DMAP[k.slice(0,-1)];
+    var f=fuzzyKey(k,DMAP);return f?DMAP[f]:null;
+  }
+
+
+  /* Proper Gujarati spelling of the English sound, for words we know. Shown as the only phonetic suggestion. */
+  var PHON={items:'આઈટમ્સ',item:'આઈટમ',cement:'સિમેન્ટ',wheat:'વ્હીટ',rice:'રાઈસ',sugar:'સુગર',salt:'સોલ્ટ',flour:'ફ્લોર',oil:'ઓઈલ',ghee:'ઘી',milk:'મિલ્ક',tea:'ટી',steel:'સ્ટીલ',iron:'આયર્ન',sand:'સેન્ડ',bricks:'બ્રિક્સ',brick:'બ્રિક',coal:'કોલ',cotton:'કોટન',groundnut:'ગ્રાઉન્ડનટ',castor:'કેસ્ટર',cumin:'ક્યુમિન',chana:'ચણા',butter:'બટર',paneer:'પનીર',curd:'કર્ડ',buttermilk:'બટરમિલ્ક',cream:'ક્રીમ',jaggery:'જેગરી',maida:'મેંદા',besan:'બેસન',semolina:'સેમોલિના',dal:'દાલ',tur:'તુવર',moong:'મૂંગ',urad:'ઉડદ',coffee:'કોફી',almond:'આલ્મન્ડ',cashew:'કાજુ',pistachio:'પિસ્તા',raisin:'રેઝિન',cardamom:'કાર્ડેમમ',saffron:'સેફ્રોન',sweet:'સ્વીટ',mithai:'મિઠાઈ',barfi:'બરફી',peda:'પેંડા',ladoo:'લડ્ડુ',jalebi:'જલેબી',rabdi:'રબડી',shrikhand:'શ્રીખંડ',basundi:'બાસુંદી',mava:'માવા',khaman:'ખમણ',dhokla:'ઢોકળા',samosa:'સમોસા',namkeen:'નમકીન',farsan:'ફરસાણ',cake:'કેક',biscuit:'બિસ્કિટ',chocolate:'ચોકલેટ',ice:'આઈસ',chilli:'ચિલી',turmeric:'ટર્મરિક',coriander:'કોરિએન્ડર',mustard:'મસ્ટર્ડ',spices:'સ્પાઈસીસ',masala:'મસાલા',potato:'પોટેટો',onion:'ઓનિયન',tomato:'ટોમેટો',garlic:'ગાર્લિક',ginger:'જિંજર',lemon:'લેમન',banana:'બનાના',mango:'મેંગો',apple:'એપલ',coconut:'કોકોનટ',water:'વોટર',packing:'પેકિંગ',box:'બોક્સ',bag:'બેગ',fertilizer:'ફર્ટિલાઈઝર',urea:'યુરિયા',sesame:'સેસમી',bajra:'બાજરા',maize:'મેઈઝ',pulses:'પલ્સીસ',gas:'ગેસ',cylinder:'સિલિન્ડર',gulab:'ગુલાબ',jamun:'જામુન',pure:'પ્યોર',fresh:'ફ્રેશ',mix:'મિક્સ',special:'સ્પેશિયલ',big:'બિગ',small:'સ્મોલ',red:'રેડ',green:'ગ્રીન',white:'વ્હાઇટ',black:'બ્લેક',yellow:'યલો'};
+  function phonOf(w){
+    var k=w.toLowerCase().replace(/[^a-z]/g,'');if(!k)return null;
+    if(PHON[k])return [PHON[k]];
+    if(k.length>2&&k.slice(-1)==='s'&&PHON[k.slice(0,-1)]){
+      var b=PHON[k.slice(0,-1)],c=b.charCodeAt(b.length-1);
+      var endsCons=c>=0x0A95&&c<=0x0AB9;
+      return [b+(endsCons?'્સ':'સ')];
+    }
+    var f=fuzzyKey(k,PHON);return f?[PHON[f]]:null;
+  }
+  /* Roman letters -> Gujarati by sound. Best effort, so the person can always edit the result. */
+  var CONS={b:'બ',c:'ક',d:'ડ',f:'ફ',g:'ગ',h:'હ',j:'જ',k:'ક',l:'લ',m:'મ',n:'ન',p:'પ',q:'ક',r:'ર',s:'સ',t:'ટ',v:'વ',w:'વ',z:'ઝ'};
+  var DIG={chh:'છ',kh:'ખ',gh:'ઘ',ch:'ચ',sh:'શ',th:'થ',ph:'ફ',bh:'ભ',dh:'ધ',jh:'ઝ',ck:'ક',wh:'વ'};
+  var VOW={aa:['આ','ા'],ai:['ઐ','ૈ'],au:['ઔ','ૌ'],aw:['ઔ','ૌ'],ay:['એ','ે'],ee:['ઈ','ી'],ea:['ઈ','ી'],ei:['એ','ે'],ey:['એ','ે'],ie:['ઈ','ી'],oa:['ઓ','ો'],oo:['ઊ','ૂ'],ou:['ઔ','ૌ'],ow:['ઓ','ો'],oi:['ઓઇ','ોય'],oy:['ઓઇ','ોય'],ue:['ઊ','ૂ'],
+    a:['અ',''],e:['એ','ે'],i:['ઇ','િ'],o:['ઓ','ો'],u:['ઉ','ુ'],
+    o2:['ઑ','ૉ'],'a$':['આ','ા'],inh:['અ',''],A_:['એ','ે'],I_:['આઇ','ાઇ'],O_:['ઓ','ો'],U_:['ઊ','ૂ']};
+  var ALT={a:['a','aa','e'],'a$':['a$','a'],inh:['inh','aa'],e:['e','ee','i'],i:['i','ee'],o:['o','o2','u'],u:['u','oo'],aa:['aa','a'],ee:['ee','i'],ea:['ee','i'],ie:['ee','i'],oo:['oo','u'],ai:['ai','e'],ay:['e','ai'],ei:['e','ee'],ey:['e','ee'],oa:['o','o2'],ou:['au','u','oo'],ow:['o','au'],aw:['au','o'],au:['au','o'],A_:['A_','aa'],I_:['I_','i'],O_:['O_','o2'],U_:['U_','u'],ue:['oo','u'],oi:['oi','o'],oy:['oi','o']};
+  function isV(ch){return 'aeiou'.indexOf(ch)>-1}
+  function translitTokens(raw){
+    var w=raw.toLowerCase();
+    if(!/^[a-z]+$/.test(w))return null;
+    w=w.replace(/([bcdfghjklmnpqrstvwxz])\1/g,'$1');
+    var toks=[],i=0,n=w.length;
+    while(i<n){
+      var c=w.charAt(i),r3=w.substr(i,3),r2=w.substr(i,2);
+      if(r3==='chh'){toks.push({c:'છ'});i+=3;continue}
+      if(r2==='qu'){toks.push({c:'ક'},{c:'વ'});i+=2;continue}
+      if(r2==='ng'&&(i+2>=n||!isV(w.charAt(i+2)))){toks.push({c:'ંગ'});i+=2;continue}
+      if(DIG[r2]){toks.push({c:DIG[r2]});i+=2;continue}
+      if(VOW[r2]&&r2.length===2){toks.push({v:r2});i+=2;continue}
+      if(isV(c)){toks.push({v:c});i++;continue}
+      if(c==='x'){toks.push({c:'ક'},{c:'સ'});i++;continue}
+      if(c==='y'){
+        var nx=w.charAt(i+1);
+        if(i===0||isV(nx))toks.push({c:'ય'});
+        else if(i===n-1)toks.push({v:'ee'});
+        else toks.push({v:'i'});
+        i++;continue;
+      }
+      if(c==='c'){toks.push({c:/[eiy]/.test(w.charAt(i+1))?'સ':'ક'});i++;continue}
+      toks.push({c:CONS[c]||c});i++;
+    }
+    var k=toks.length,last=toks[k-1];
+    if(n>3&&/[^aeiouy]e$/.test(w)&&last&&last.v==='e'){
+      toks.pop();
+      for(var j=toks.length-1;j>=0;j--){
+        if(toks[j].v){ if('aiou'.indexOf(toks[j].v)>-1&&toks[j].v.length===1)toks[j].v=toks[j].v.toUpperCase()+'_'; break; }
+      }
+    }
+    k=toks.length;
+    if(k>1&&toks[k-1].c==='ર'&&toks[k-2].v&&'aeou'.indexOf(toks[k-2].v)>-1&&toks[k-2].v.length===1)toks[k-2].v='inh';
+    if(k>1&&toks[k-1].v==='a'&&toks[k-2].c)toks[k-1].v='a$';
+    for(var q=1;q<toks.length-1;q++){
+      var t=toks[q],nx2=toks[q+1];
+      if(t.c==='ન'&&nx2.c&&nx2.c!=='ન'&&nx2.c!=='મ'&&nx2.c!=='ંગ')t.nas=true;
+      if(t.c==='મ'&&nx2.c&&'પબભફ'.indexOf(nx2.c)>-1)t.nas=true;
+    }
+    return toks;
+  }
+  function assemble(toks,sel){
+    var out='',prevC=false;
+    toks.forEach(function(t,idx){
+      var o=sel[idx]||0;
+      if(t.v){var key=ALT[t.v]?ALT[t.v][o]:t.v;var f=VOW[key]||VOW.a;out+=prevC?f[1]:f[0];prevC=false}
+      else if(t.nas&&o===1){out+='ં';prevC=false}
+      else{ if(prevC&&t.c!=='ંગ')out+='્'; out+=t.c; prevC=true }
+    });
+    return out;
+  }
+  /* Spelling variants: the same sound written with different matras and bindi. First one is the best guess. */
+  function translitVariants(raw,max){
+    var toks=translitTokens(raw);
+    if(!toks)return [raw];
+    var pos=[];
+    toks.forEach(function(t,i){
+      if(t.v&&ALT[t.v])pos.push([i,ALT[t.v].length]);
+      else if(t.nas)pos.push([i,2]);
+    });
+    var res=[assemble(toks,{})];
+    function add(sel){var s=assemble(toks,sel);if(res.indexOf(s)<0)res.push(s)}
+    var a,b,x,y;
+    for(a=0;a<pos.length;a++)for(x=1;x<pos[a][1];x++){var s1={};s1[pos[a][0]]=x;add(s1)}
+    for(a=0;a<pos.length&&res.length<max;a++)for(b=a+1;b<pos.length;b++)
+      for(x=1;x<pos[a][1];x++)for(y=1;y<pos[b][1];y++){var s2={};s2[pos[a][0]]=x;s2[pos[b][0]]=y;add(s2)}
+    return res.slice(0,max);
+  }
+  function translitWord(raw){return translitVariants(raw,1)[0]}
+  function wordsOf(s){return s.split(/\s+/).filter(Boolean)}
+  function computeGu(en){
+    var ws=wordsOf(en),all=ws.length>0,tr=[],ph=[],per=[];
+    ws.forEach(function(w){
+      var v=phonOf(w)||translitVariants(w,10),d=lookup(w);
+      per.push(v);ph.push(v[0]);
+      if(d)tr.push(d);else{all=false;tr.push(v[0])}
+    });
+    var vars=[ph.join(' ')];
+    per.forEach(function(v,wi){for(var k=1;k<v.length;k++){var arr=ph.slice();arr[wi]=v[k];var s=arr.join(' ');if(vars.indexOf(s)<0)vars.push(s)}});
+    return {tr:tr.join(' '),ph:ph.join(' '),all:all,vars:vars.slice(0,12)};
+  }
+  var guTouched=false;
+  var $=function(s){return document.querySelector(s)}, $$=function(s){return Array.prototype.slice.call(document.querySelectorAll(s))};
+  function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+  /* Storage: localStorage first. If the browser blocks it, fall back to window.name (survives reloads of the same tab). */
+  var LS=null;try{localStorage.setItem('__t','1');localStorage.removeItem('__t');LS=localStorage}catch(e){LS=null}
+  function wnGet(){try{var o=JSON.parse(window.name);return (o&&typeof o==='object')?o:{}}catch(e){return {}}}
+  function load(k,f){
+    try{
+      if(LS){var v=LS.getItem(k);if(v)return JSON.parse(v)}
+      var w=wnGet();if(w[k]!==undefined)return w[k];
+    }catch(e){}
+    return f;
+  }
+  function save(k,v){
+    var ok=false;
+    if(LS){try{LS.setItem(k,JSON.stringify(v));ok=true}catch(e){}}
+    try{var w=wnGet();w[k]=v;window.name=JSON.stringify(w)}catch(e){}
+    return ok;
+  }
+
+  var UC='<div class="uc"><div class="ring"><svg class="i" viewBox="0 0 24 24"><path d="M22.7 19 13.6 9.9a5.4 5.4 0 00-1.3-5.6 5.4 5.4 0 00-5.2-1.4l3.2 3.2-2.8 2.8-3.2-3.2A5.4 5.4 0 004.9 11a5.4 5.4 0 005.6 1.3l9.1 9.1a1 1 0 001.4 0l1.7-1.7a1 1 0 000-1.7z"/></svg></div><b>Under Construction</b><div class="gb">નિર્માણાધીન</div><span>This section is being built and will be available soon.</span><span>આ વિભાગ તૈયાર થઈ રહ્યો છે અને જલ્દી ઉપલબ્ધ થશે.</span></div>';
+  ['home','bill','reports'].forEach(function(t){$('#v-'+t).innerHTML=UC});
+
+  var tab='home', adminView='menu';
+  function showView(){
+    var id='v-'+tab; if(tab==='admin')id=adminView==='items'?'v-items':adminView==='prices'?'v-prices':adminView==='party'?'v-party':'v-admin';
+    $$('.view').forEach(function(v){v.hidden=v.id!==id});
+    $$('.tab').forEach(function(b){b.setAttribute('aria-selected',b.dataset.t===tab?'true':'false')});
+    $('#ttl').innerHTML=TITLES[tab][0]+'<span class="gu">'+TITLES[tab][1]+'</span>';
+    if(tab==='payment')renderPayment();
+    $('#main').scrollTop=0;
+    try{history.replaceState(null,'','#'+tab)}catch(e){}
+  }
+  function setTab(t){
+    if(t==='admin'&&tab==='admin'&&adminView!=='menu')adminView='menu';
+    tab=t; showView();
+  }
+
+  /* ---------- Items ---------- */
+  var items=load(ITEMS_KEY,[]), mode='add', editId=null, delId=null, kbOpen=false;
+  function persist(){if(!save(ITEMS_KEY,items))setTimeout(function(){toast('Browser blocks storage: data may be lost when you close · બ્રાઉઝરમાં સ્ટોરેજ બંધ છે, બંધ કરતા ડેટા જઈ શકે')},2200)}
+  $('#item-unit').innerHTML=UNITS.map(function(u){return '<option value="'+u[0]+'">'+u[0]+' / '+u[1]+'</option>'}).join('');
+  function unitGu(u){for(var i=0;i<UNITS.length;i++)if(UNITS[i][0]===u)return UNITS[i][1];return ''}
+
+  var TITLES_F={add:'Add Item / વસ્તુ ઉમેરો',edit:'Edit Item / વસ્તુ સુધારો',delete:'Delete Item / વસ્તુ કાઢો'};
+  var PROMPT={edit:['Tap an item in the list below to edit it.','સુધારવા માટે નીચેની યાદીમાંથી વસ્તુ પસંદ કરો.'],delete:['Tap an item in the list below to delete it.','કાઢવા માટે નીચેની યાદીમાંથી વસ્તુ પસંદ કરો.']};
+
+  function renderItems(){
+    $$('#modes .mode').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.mode===mode?'true':'false')});
+    $('#formTitle').textContent=TITLES_F[mode];
+    var showForm=mode==='add'||(mode==='edit'&&editId!==null);
+    $('#itemForm').hidden=!showForm;
+    var pr=$('#prompt');
+    if(!showForm&&delId===null){pr.hidden=false;pr.innerHTML=esc(PROMPT[mode][0])+'<span class="gu">'+PROMPT[mode][1]+'</span>'}else pr.hidden=true;
+    var it=items.filter(function(x){return x.id===delId})[0];
+    $('#confirm').hidden=!(mode==='delete'&&it);
+    if(it)$('#confirmTxt').textContent='Delete “'+it.en+' · '+it.gu+'”? / કાઢી નાખવું?';
+    var rows=items.map(function(x){
+      var cls='tr'+(x.id===editId||x.id===delId?' sel':'');
+      var inner='<div class="n"><b>'+esc(x.en)+'</b><span>'+esc(x.gu)+'</span></div><div class="u">'+esc(x.unit)+'<span>'+esc(unitGu(x.unit))+'</span></div>';
+      if(mode==='add')return '<div class="'+cls+'">'+inner+'</div>';
+      return '<button type="button" class="'+cls+'" data-row="'+x.id+'">'+inner+'</button>';
+    }).join('');
+    $('#itemRows').innerHTML=rows||'<div class="emptyRow">No items yet. Add your first item above.<br>હજી કોઈ વસ્તુ નથી. ઉપર પહેલી વસ્તુ ઉમેરો.</div>';
+  }
+
+  function resetForm(){
+    $('#item-en').value='';$('#item-gu').value='';$('#item-unit').selectedIndex=0;
+    editId=null;guTouched=false;updateSugs();setKb(false);if(voice&&voice.on)stopVoice();
+  }
+  function setMode(m){mode=m;editId=null;delId=null;resetForm();renderItems()}
+
+  function onEnglish(){
+    var en=$('#item-en').value.trim(), g=$('#item-gu');
+    if(!guTouched)g.value=en?computeGu(en).tr:'';
+    updateSugs();
+  }
+  function updateSugs(){
+    var en=$('#item-en').value.trim(), box=$('#sugs'), note=$('#autoNote'), cur=$('#item-gu').value;
+    note.hidden=guTouched||!cur;
+    if(!en){box.hidden=true;box.innerHTML='';return}
+    var c=computeGu(en), chips=[];
+    c.vars.slice(0,1).forEach(function(v,i){
+      chips.push({gu:v,label:i===0?'Phonetic · ઉચ્ચાર':'Spelling '+(i+1)+' · જોડણી '+(i+1)});
+    });
+    box.hidden=false;
+    box.innerHTML='<div class="sugTitle">Phonetic · ઉચ્ચાર</div>'+chips.map(function(x){
+      return '<button type="button" class="sug'+(x.gu===cur?' on':'')+'" data-gu="'+esc(x.gu)+'"'+(x.en?' data-en="'+esc(x.en)+'"':'')+'><span class="g">'+esc(x.gu)+'</span><small>'+esc(x.label)+'</small></button>';
+    }).join('');
+  }
+
+  /* Gujarati on-screen keyboard (matra, bindi and letters) */
+  var KB=[
+    ['Matra · માત્રા','ા િ ી ુ ૂ ૃ ે ૈ ો ૌ'],
+    ['Signs · ચિહ્ન','ં ઃ ઁ ્ ઼ ।'],
+    ['Vowels · સ્વર','અ આ ઇ ઈ ઉ ઊ ઋ એ ઐ ઓ ઔ'],
+    ['Letters · વ્યંજન','ક ખ ગ ઘ ઙ ચ છ જ ઝ ઞ ટ ઠ ડ ઢ ણ ત થ દ ધ ન પ ફ બ ભ મ ય ર લ વ શ ષ સ હ ળ ક્ષ જ્ઞ'],
+    ['Numbers · અંક','૦ ૧ ૨ ૩ ૪ ૫ ૬ ૭ ૮ ૯']
+  ];
+  (function(){
+    var h='';
+    KB.forEach(function(g){
+      h+='<div class="lab">'+g[0]+'</div><div class="rowk">'+g[1].split(' ').map(function(k){
+        var lab=(g[0].indexOf('Matra')===0||k==='઼'||k==='્'||k==='ં'||k==='ઃ'||k==='ઁ')?'◌'+k:k;
+        return '<button type="button" data-k="'+k+'">'+lab+'</button>'}).join('')+'</div>';
+    });
+    h+='<div class="rowk"><button type="button" class="wide" data-k=" ">Space · જગ્યા</button><button type="button" class="wide" data-k="BS">⌫ Delete · ભૂંસો</button></div>';
+    $('#kb').innerHTML=h;
+  })();
+  function setKb(on){
+    kbOpen=on;$('#kb').hidden=!on;$('#kbBtn').setAttribute('aria-pressed',on?'true':'false');
+    var i=$('#item-gu');if(on)i.setAttribute('inputmode','none');else i.removeAttribute('inputmode');
+  }
+  function typeKey(k){
+    guTouched=true;
+    var i=$('#item-gu'),v=i.value,s=i.selectionStart,e=i.selectionEnd;
+    if(s==null){s=e=v.length}
+    if(k==='BS'){ if(s!==e){v=v.slice(0,s)+v.slice(e)} else if(s>0){v=v.slice(0,s-1)+v.slice(s);s--} e=s; }
+    else{ v=v.slice(0,s)+k+v.slice(e); s+=k.length; e=s; }
+    i.value=v;
+    try{i.setSelectionRange(s,s)}catch(x){}
+    updateSugs();
+  }
+  $('#kb').addEventListener('mousedown',function(ev){ev.preventDefault()});
+  $('#kb').addEventListener('touchstart',function(ev){ev.preventDefault();var b=ev.target.closest('button[data-k]');if(b)typeKey(b.dataset.k)},{passive:false});
+  $('#kb').addEventListener('click',function(ev){var b=ev.target.closest('button[data-k]');if(b&&!('ontouchstart' in window))typeKey(b.dataset.k)});
+
+  $('#item-en').addEventListener('input',onEnglish);
+  $('#item-gu').addEventListener('input',function(){guTouched=true;updateSugs()});
+  $('#itemForm').addEventListener('save',function(){
+    var en=$('#item-en').value.trim(), gu=$('#item-gu').value.trim(), unit=$('#item-unit').value;
+    if(!en||!gu){toast('Enter both names · બંને નામ લખો');return}
+    var dup=items.some(function(x){return x.en.toLowerCase()===en.toLowerCase()&&x.id!==editId});
+    if(dup){toast('Item already exists · વસ્તુ પહેલેથી છે');return}
+    if(mode==='edit'&&editId!==null){
+      items.forEach(function(x){if(x.id===editId){x.en=en;x.gu=gu;x.unit=unit}});
+      toast('Item updated · વસ્તુ સુધારી');
+      persist();resetForm();renderItems();return;
+    }
+    items.push({id:Date.now(),en:en,gu:gu,unit:unit});
+    persist();toast('Item saved · વસ્તુ સાચવી');resetForm();renderItems();
+  });
+
+  /* ---------- Voice typing ---------- */
+  var voice={kind:null,dict:null,SR:null,rec:null,cur:null,base:'',on:false,gone:{},failAt:0};
+  function vField(t){return $(t==='en'?'#item-en':'#item-gu')}
+  function showMics(){$$('.micBtn').forEach(function(b){b.hidden=!voice.kind||!!voice.gone[b.dataset.mic]})}
+  function setNote(html,kind){var n=$('#micNote');if(!html){n.hidden=true;n.innerHTML='';n.dataset.kind='';return}n.hidden=false;n.dataset.kind=kind||'';n.innerHTML=html}
+  function setOn(on){
+    voice.on=on;
+    $$('.micBtn').forEach(function(b){var me=on&&voice.cur===b.dataset.mic;b.setAttribute('aria-pressed',me?'true':'false');b.disabled=on&&!me});
+    if(on)setNote('Listening… speak now · સાંભળી રહ્યું છે… બોલો','live');
+    else if($('#micNote').dataset.kind==='live')setNote('');
+  }
+  function joinText(base,add){
+    if(!add)return base;
+    if(!base)return add.replace(/^\s+/,'');
+    return (/\s$/.test(base)||/^\s/.test(add))?base+add:base+' '+add;
+  }
+  function vClean(t,x){
+    x=x.replace(/[.,!?;:।]+/g,'').replace(/\s{2,}/g,' ');
+    if(t==='en')x=x.replace(/\b[a-z]/g,function(c){return c.toUpperCase()});
+    return x;
+  }
+  function afterVoice(t){if(t==='en')onEnglish();else{guTouched=true;updateSugs()}}
+  function applyVoice(t,partial,final){
+    var f=vField(t);if(!f)return;
+    if(final)voice.base=joinText(voice.base,vClean(t,final));
+    f.value=partial?joinText(voice.base,vClean(t,partial)):voice.base;
+    afterVoice(t);
+  }
+  function openPerms(){
+    var u=(window.claude&&claude.use)?claude.use('permissions'):Promise.resolve(null);
+    u.then(function(p){if(p&&p.manage)return p.manage();toast('Open this page’s Permissions menu · પેજનું Permissions મેનુ ખોલો')})
+     .catch(function(){toast('Open this page’s Permissions menu · પેજનું Permissions મેનુ ખોલો')});
+  }
+  function voiceFail(code){
+    var now=Date.now();if(now-voice.failAt<800)return;voice.failAt=now;
+    if(code==='not_granted'){
+      setNote('Microphone permission was denied, so voice typing is off. Allow the microphone to use it. · માઇક્રોફોનની પરવાનગી નકારાઈ છે. વૉઇસ ટાઇપિંગ માટે માઇક્રોફોનની પરવાનગી આપો.'+
+        (voice.kind==='cap'?'<button type="button" class="linkbtn" data-act="perm">Permissions · પરવાનગી</button>':''),'warn');
+    }else if(code==='unavailable'){
+      if(voice.cur)voice.gone[voice.cur]=true;showMics();
+      toast('Voice typing is not available here · અહીં વૉઇસ ટાઇપિંગ ઉપલબ્ધ નથી');
+    }else if(code==='rate_limited')toast('Too many requests. Try again shortly. · થોડીવાર પછી ફરી પ્રયત્ન કરો');
+    else if(code==='upstream_error')toast('Voice typing failed. Try again. · વૉઇસ ટાઇપિંગ ચાલ્યું નહીં. ફરી પ્રયત્ન કરો');
+  }
+  function stopVoice(){
+    try{
+      if(voice.kind==='cap'&&voice.dict)voice.dict.stop().catch(function(){});
+      else if(voice.rec)voice.rec.stop();
+    }catch(e){}
+  }
+  function micClick(t){
+    if(!voice.kind)return;
+    if(voice.on)return stopVoice();
+    voice.cur=t;voice.base=vField(t).value.replace(/\s+$/,'');
+    setNote('');setOn(true);
+    if(voice.kind==='cap'){
+      voice.dict.start({language:t==='en'?'en':'gu'}).catch(function(err){
+        var code=err&&err.code;
+        if(code&&code!=='dismissed'&&code!=='stopped')voiceFail(code);
+        setOn(false);voice.cur=null;
+      });
+      return;
+    }
+    var rec=new voice.SR();voice.rec=rec;
+    rec.lang=t==='en'?'en-IN':'gu-IN';rec.interimResults=true;rec.continuous=false;
+    rec.onresult=function(ev){
+      var fin='',tmp='';
+      for(var i=0;i<ev.results.length;i++){var r=ev.results[i];if(r.isFinal)fin+=r[0].transcript;else tmp+=r[0].transcript}
+      var f=vField(t);f.value=joinText(voice.base,vClean(t,(fin+' '+tmp).trim()));afterVoice(t);
+    };
+    rec.onerror=function(ev){
+      var c=ev&&ev.error;
+      if(c==='not-allowed'||c==='service-not-allowed')voiceFail('not_granted');
+      else if(c==='language-not-supported')voiceFail('unavailable');
+      else if(c==='no-speech')toast('No speech heard · કંઈ સંભળાયું નહીં');
+      else if(c!=='aborted')voiceFail('upstream_error');
+    };
+    rec.onend=function(){setOn(false);voice.cur=null};
+    try{rec.start()}catch(e){setOn(false);voice.cur=null}
+  }
+  (function initVoice(){
+    var p=(window.claude&&claude.use)?claude.use('dictation'):Promise.resolve(null);
+    p.catch(function(){return null}).then(function(d){
+      if(d){
+        voice.kind='cap';voice.dict=d;
+        d.onPartial(function(e){if(voice.cur)applyVoice(voice.cur,e.text||'','')});
+        d.onFinal(function(e){if(voice.cur)applyVoice(voice.cur,'',e.text||'')});
+        d.onState(function(e){
+          if(e.state==='idle'){
+            setOn(false);
+            if(e.reason&&e.reason!=='stopped'&&e.reason!=='viewer_stopped'&&e.reason!=='hidden'&&e.reason!=='time_limit'&&e.reason!=='dismissed')voiceFail(e.reason);
+            voice.cur=null;
+          }else if(voice.cur)setOn(true);
+        });
+      }else{
+        var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+        if(SR){voice.kind='sr';voice.SR=SR}
+      }
+      showMics();
+    });
+  })();
+
+
+  /* ---------- Price List ---------- */
+  var rates=load(RATES_KEY,{}), editRate=null;
+  var PEN='<svg class="i" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.8 9.94l-3.75-3.75L3 17.25zM20.7 7.04a1 1 0 000-1.41l-2.34-2.34a1 1 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>';
+  var TICK='<svg class="i" viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>';
+  function rateOf(id){var r=rates[id];return (typeof r==='number'&&isFinite(r))?r:0}
+  function fmtRate(n){return String(Math.round(n*100)/100)}
+  function renderPrices(){
+    var h=items.map(function(x){
+      var on=editRate===x.id;
+      return '<div class="pr"><div class="n"><b>'+esc(x.en)+'</b><span>'+esc(x.gu)+'</span><em>1 '+esc(x.unit)+' · '+esc(unitGu(x.unit))+'</em></div>'+
+        '<div class="rt"><div class="rbox'+(on?' on':'')+'"><b>₹</b><input type="text" inputmode="decimal" data-rate="'+x.id+'" value="'+fmtRate(rateOf(x.id))+'"'+(on?'':' readonly tabindex="-1"')+' aria-label="Rate / ભાવ"></div>'+
+        (on?'<button type="button" class="rbtn ok" data-rate-save="'+x.id+'" aria-label="Save rate / ભાવ સાચવો">'+TICK+'</button>'
+           :'<button type="button" class="rbtn" data-rate-edit="'+x.id+'" aria-label="Edit rate / ભાવ બદલો">'+PEN+'</button>')+
+        '</div></div>';
+    }).join('');
+    $('#priceRows').innerHTML=h||'<div class="emptyRow">No items yet. Add items from Admin first.<br>હજી કોઈ વસ્તુ નથી. પહેલા એડમિનમાંથી વસ્તુ ઉમેરો.</div>';
+  }
+  function startRate(id){
+    editRate=id;renderPrices();
+    var f=$('#priceRows input[data-rate="'+id+'"]');if(f){f.focus();f.select()}
+  }
+  function saveRate(id){
+    var f=$('#priceRows input[data-rate="'+id+'"]');if(!f)return;
+    var v=parseFloat(String(f.value).replace(/,/g,'').trim());
+    if(!isFinite(v)||v<0){toast('Enter a valid rate · સાચો ભાવ લખો');f.focus();return}
+    rates[id]=Math.round(v*100)/100;save(RATES_KEY,rates);
+    editRate=null;renderPrices();toast('Rate saved · ભાવ સાચવ્યો');
+  }
+  $('#priceRows').addEventListener('keydown',function(ev){
+    var f=ev.target.closest('input[data-rate]');if(!f)return;
+    if(ev.key==='Enter'){ev.preventDefault();saveRate(+f.dataset.rate)}
+    else if(ev.key==='Escape'){editRate=null;renderPrices()}
+  });
+
+
+  /* ---------- Customers / Suppliers ---------- */
+  var CUST_KEY='cyan-navy-customers-v1', SUPP_KEY='cyan-navy-suppliers-v1', PAY_KEY='cyan-navy-payments-v1';
+  var PK={customer:{key:CUST_KEY,en:'Customer',gu:'ગ્રાહક',add:'Add Customer / ગ્રાહક ઉમેરો',none:'No customers yet. Add one from Admin → Add Customer. · હજી કોઈ ગ્રાહક નથી. એડમિન → ગ્રાહક ઉમેરો માંથી ઉમેરો.'},
+          supplier:{key:SUPP_KEY,en:'Supplier',gu:'સપ્લાયર',add:'Add Supplier / સપ્લાયર ઉમેરો',none:'No suppliers yet. Add one from Admin → Add Supplier. · હજી કોઈ સપ્લાયર નથી. એડમિન → સપ્લાયર ઉમેરો માંથી ઉમેરો.'}};
+  var parties={customer:load(CUST_KEY,[]),supplier:load(SUPP_KEY,[])}, partyKind='customer', pendDel=null, payments=load(PAY_KEY,[]);
+  function saveW(k,v){if(!save(k,v))setTimeout(function(){toast('Browser blocks storage: data may be lost when you close · બ્રાઉઝરમાં સ્ટોરેજ બંધ છે, બંધ કરતા ડેટા જઈ શકે')},2200)}
+  var TRASH='<svg class="i" viewBox="0 0 24 24"><path d="M6 19a2 2 0 002 2h8a2 2 0 002-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>';
+  function renderParty(){
+    var k=PK[partyKind],list=parties[partyKind];
+    $('#partyTitle').textContent=k.add;
+    $('#partyLbl').textContent=k.en+' name';
+    $('#partyListHead').innerHTML=k.en+'s<small>'+k.gu+'</small>';
+    $('#partyRows').innerHTML=list.map(function(x){
+      var right=pendDel===x.id
+        ?'<button type="button" class="mini dng" data-pdelyes="'+x.id+'">Delete · કાઢો</button><button type="button" class="mini sec" data-pdelno="1">Cancel</button>'
+        :'<button type="button" class="rbtn trash" data-pdel="'+x.id+'" aria-label="Delete / કાઢો">'+TRASH+'</button>';
+      return '<div class="pr"><div class="n"><b>'+esc(x.name)+'</b></div><div class="rt">'+right+'</div></div>';
+    }).join('')||'<div class="emptyRow">Nothing added yet.<br>હજી કશું ઉમેર્યું નથી.</div>';
+  }
+  $('#partyForm').addEventListener('save',function(){
+    var f=$('#party-name'),name=f.value.trim(),list=parties[partyKind];
+    if(!name){toast('Enter a name · નામ લખો');return}
+    if(list.some(function(x){return x.name.toLowerCase()===name.toLowerCase()})){toast('Already exists · પહેલેથી છે');return}
+    list.push({id:Date.now(),name:name});saveW(PK[partyKind].key,list);
+    f.value='';renderParty();toast('Saved · સાચવ્યું');
+  });
+
+  /* ---------- Payment ---------- */
+  function payType(){var r=$('input[name="ptype"]:checked');return r?r.value:'received'}
+  function renderPayment(){
+    var kind=payType()==='received'?'customer':'supplier',k=PK[kind],list=parties[kind],sel=$('#pay-party');
+    $('#payPartyLbl').textContent=k.en;$('#payPartySub').textContent=k.gu;
+    sel.innerHTML='<option value="">Select '+k.en.toLowerCase()+' · '+k.gu+' પસંદ કરો</option>'+list.map(function(x){return '<option value="'+x.id+'">'+esc(x.name)+'</option>'}).join('');
+    var e=$('#payPartyEmpty');e.hidden=list.length>0;e.textContent=list.length?'':k.none;
+    renderPayList();
+  }
+  function fmtAmt(n){return '₹'+Number(n).toLocaleString('en-IN',{maximumFractionDigits:2})}
+  function renderPayList(){
+    var h=payments.slice(0,15).map(function(x){
+      var inn=x.type==='received',dt='';
+      try{dt=new Date(x.ts).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'})}catch(e){}
+      return '<div class="pl"><div><b>'+esc(x.pname)+'</b><div class="d">'+(inn?'Received · મળ્યા':'Paid · ચૂકવ્યા')+' · '+esc(dt)+'</div>'+(x.note?'<div class="d">'+esc(x.note)+'</div>':'')+'</div><div class="a '+(inn?'in':'out')+'">'+(inn?'+':'−')+fmtAmt(x.amt)+'</div></div>';
+    }).join('');
+    $('#payList').innerHTML=h||'<div class="emptyRow">No payments yet.<br>હજી કોઈ પેમેન્ટ નથી.</div>';
+  }
+  $('#payForm').addEventListener('change',function(ev){if(ev.target.name==='ptype')renderPayment()});
+  $('#payForm').addEventListener('save',function(){
+    var type=payType(),kind=type==='received'?'customer':'supplier',pid=+$('#pay-party').value;
+    var party=parties[kind].filter(function(x){return x.id===pid})[0];
+    if(!party){toast('Select '+PK[kind].en.toLowerCase()+' · '+PK[kind].gu+' પસંદ કરો');return}
+    var amt=parseFloat($('#pay-amt').value.replace(/,/g,'').trim());
+    if(!isFinite(amt)||amt<=0){toast('Enter a valid amount · સાચી રકમ લખો');$('#pay-amt').focus();return}
+    payments.unshift({id:Date.now(),type:type,pid:pid,pname:party.name,amt:Math.round(amt*100)/100,note:$('#pay-note').value.trim(),ts:Date.now()});
+    saveW(PAY_KEY,payments);
+    $('#pay-amt').value='';$('#pay-note').value='';$('#pay-party').value='';
+    renderPayList();toast('Payment saved · પેમેન્ટ સાચવ્યું');
+  });
+  $('#payClear').addEventListener('click',function(){$('#pay-amt').value='';$('#pay-note').value='';$('#pay-party').value=''});
+  $('#partyClear').addEventListener('click',function(){$('#party-name').value=''});
+
+  /* ---------- Theme and toast ---------- */
+  function applyTheme(m){
+    var r=document.documentElement;
+    if(m==='light'||m==='dark')r.setAttribute('data-theme',m);else r.removeAttribute('data-theme');
+    save(THEME,m);
+  }
+  function currentDark(){
+    var t=document.documentElement.getAttribute('data-theme');
+    if(t)return t==='dark';
+    return !!(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches);
+  }
+  var tt;
+  function toast(msg){var t=$('#toast');t.textContent=msg;t.classList.add('on');clearTimeout(tt);tt=setTimeout(function(){t.classList.remove('on')},2000)}
+
+  document.addEventListener('click',function(ev){
+    var el=ev.target.closest('button');if(!el)return;
+    if(el.dataset.save!==undefined){var fm=el.closest('[data-form]');if(fm)fm.dispatchEvent(new Event('save'));return}
+    if(el.dataset.mic)return micClick(el.dataset.mic);
+    if(el.dataset.act==='perm')return openPerms();
+    if(el.dataset.t)return setTab(el.dataset.t);
+    if(el.id==='themeBtn'){applyTheme(currentDark()?'light':'dark');return toast(currentDark()?'Dark theme · ડાર્ક થીમ':'Light theme · લાઇટ થીમ')}
+    if(el.dataset.open==='items'){adminView='items';mode='add';editId=null;delId=null;resetForm();renderItems();return showView()}
+    if(el.dataset.open==='prices'){adminView='prices';editRate=null;renderPrices();return showView()}
+    if(el.id==='pricesBack'){adminView='menu';editRate=null;return showView()}
+    if(el.dataset.rateEdit)return startRate(+el.dataset.rateEdit);
+    if(el.dataset.rateSave)return saveRate(+el.dataset.rateSave);
+    if(el.dataset.open==='customer'||el.dataset.open==='supplier'){partyKind=el.dataset.open;adminView='party';pendDel=null;$('#party-name').value='';renderParty();return showView()}
+    if(el.id==='partyBack'){adminView='menu';pendDel=null;return showView()}
+    if(el.dataset.pdel){pendDel=+el.dataset.pdel;return renderParty()}
+    if(el.dataset.pdelno){pendDel=null;return renderParty()}
+    if(el.dataset.pdelyes){var did=+el.dataset.pdelyes;parties[partyKind]=parties[partyKind].filter(function(x){return x.id!==did});saveW(PK[partyKind].key,parties[partyKind]);pendDel=null;renderParty();return toast('Deleted · કાઢ્યું')}
+    if(el.id==='itemsBack'){adminView='menu';return showView()}
+    if(el.dataset.mode)return setMode(el.dataset.mode);
+    if(el.id==='kbBtn')return setKb(!kbOpen);
+    if(el.classList.contains('sug')){
+      if(el.dataset.en)$('#item-en').value=el.dataset.en;
+      $('#item-gu').value=el.dataset.gu;guTouched=true;updateSugs();return;
+    }
+    if(el.id==='cancelBtn'){resetForm();delId=null;renderItems();return}
+    if(el.dataset.row){
+      var id=+el.dataset.row,it=items.filter(function(x){return x.id===id})[0];if(!it)return;
+      if(mode==='edit'){editId=id;$('#item-en').value=it.en;$('#item-gu').value=it.gu;$('#item-unit').value=it.unit;guTouched=true;updateSugs();renderItems();$('#item-en').focus()}
+      else if(mode==='delete'){delId=id;renderItems()}
+      return;
+    }
+    if(el.id==='confirmNo'){delId=null;return renderItems()}
+    if(el.id==='confirmYes'){rates=load(RATES_KEY,{});delete rates[delId];save(RATES_KEY,rates);items=items.filter(function(x){return x.id!==delId});delId=null;persist();toast('Item deleted · વસ્તુ કાઢી');return renderItems()}
+  });
+
+  document.addEventListener('keydown',function(ev){
+    if(ev.key!=='Enter'||ev.isComposing)return;
+    var t=ev.target;if(!t||t.tagName!=='INPUT'||t.type!=='text')return;
+    var fm=t.closest('[data-form]');if(!fm)return;
+    ev.preventDefault();fm.dispatchEvent(new Event('save'));
+  });
+  applyTheme(load(THEME,'system'));
+  renderItems();
+  var h=(location.hash||'').slice(1);
+  tab=TITLES[h]?h:'home';
+  showView();
+})();
+</script>
+
+</body></html>
