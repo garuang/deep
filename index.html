@@ -1,6 +1,7 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
-<title>Cyan Navy App</title>
-<meta name="claude:viewport-fit-sides" content="cover">
+<title>Khatavahi · ખાતાવહી</title>
+<link rel="icon" href="logo-512.png">
+<link rel="apple-touch-icon" href="logo-512.png">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Gujarati:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap">
 <style>
 /* Layout: phone-width app shell. Top app bar, scrolling content, bottom tab bar. Cyan accent on navy. Every label is English plus Gujarati. */
@@ -35,7 +36,7 @@ button{cursor:pointer;border:0;background:none}
 .bar{background:var(--bar);color:var(--on-bar);flex:none}
 .bar-in{height:56px;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .brand{display:flex;align-items:center;gap:10px;min-width:0}
-.logo{width:30px;height:30px;border-radius:9px;background:var(--accent-fill);color:var(--on-accent);display:grid;place-items:center;font:700 14px var(--head);flex:none}
+.logo{width:36px;height:36px;border-radius:9px;object-fit:contain;flex:none}
 .ttl{font:700 19px var(--head);letter-spacing:.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ttl .gu{font:600 15px var(--font);opacity:.8;margin-left:8px}
 .icon-btn{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:var(--on-bar);transition:background .15s;flex:none}
@@ -185,7 +186,7 @@ textarea:focus{border-color:var(--accent-fill);outline:0;box-shadow:0 0 0 3px va
 
 <div class="app">
   <header class="bar"><div class="bar-in gut">
-    <div class="brand"><div class="logo">GM</div><div class="ttl" id="ttl"></div></div>
+    <div class="brand"><img class="logo" src="logo.png" alt="Khatavahi / ખાતાવહી"><div class="ttl" id="ttl"></div></div>
     <button class="icon-btn" id="themeBtn" aria-label="Switch light or dark theme / લાઇટ કે ડાર્ક થીમ બદલો"><svg class="i" viewBox="0 0 24 24"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm0 16V5a7 7 0 010 14z"/></svg></button>
   </div></header>
 
@@ -531,7 +532,25 @@ textarea:focus{border-color:var(--accent-fill);outline:0;box-shadow:0 0 0 3px va
 
   /* ---------- Items ---------- */
   var items=load(ITEMS_KEY,[]), mode='add', editId=null, delId=null, kbOpen=false;
-  function persist(){if(!save(ITEMS_KEY,items))setTimeout(function(){toast('Browser blocks storage: data may be lost when you close · બ્રાઉઝરમાં સ્ટોરેજ બંધ છે, બંધ કરતા ડેટા જઈ શકે')},2200)}
+  var API_URL='https://script.google.com/macros/s/AKfycbz_nUr_-k8QYrBjzao7x-SJ0mFHYe9kNUsrI-Aptjdt8b3mwNOX30qktglXrH4_2cDS/exec', sheetReady=false, syncT;
+  function persist(){
+    save(ITEMS_KEY,items);
+    if(!API_URL||!sheetReady)return;
+    clearTimeout(syncT);
+    syncT=setTimeout(function(){
+      fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'replaceItems',items:items})})
+        .then(function(r){return r.json()}).then(function(j){if(!j.ok)throw new Error(j.error)})
+        .catch(function(){toast('Sheet save failed · શીટમાં સેવ ન થયું')});
+    },300);
+  }
+  function loadFromSheet(){
+    if(!API_URL)return;
+    fetch(API_URL).then(function(r){return r.json()}).then(function(j){
+      if(!j.ok)throw new Error(j.error);
+      items=j.items;save(ITEMS_KEY,items);sheetReady=true;renderItems();
+      if(adminView==='prices')renderPrices();
+    }).catch(function(){toast('Cannot reach Google Sheet · ગૂગલ શીટ સાથે જોડાણ નથી')});
+  }
   $('#item-unit').innerHTML=UNITS.map(function(u){return '<option value="'+u[0]+'">'+u[0]+' / '+u[1]+'</option>'}).join('');
   function unitGu(u){for(var i=0;i<UNITS.length;i++)if(UNITS[i][0]===u)return UNITS[i][1];return ''}
 
@@ -889,6 +908,7 @@ textarea:focus{border-color:var(--accent-fill);outline:0;box-shadow:0 0 0 3px va
   });
   applyTheme(load(THEME,'system'));
   renderItems();
+  loadFromSheet();
   var h=(location.hash||'').slice(1);
   tab=TITLES[h]?h:'home';
   showView();
